@@ -7,6 +7,7 @@ class Bookmarks < Sinatra::Base
   end
 
   get '/' do
-    erb :index, locals: { bookmarks => Bookmark }
+    @bookmarks = Bookmark.all
+    erb :index
   end
 end
