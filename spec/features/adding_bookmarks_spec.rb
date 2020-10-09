@@ -7,7 +7,7 @@ feature 'adding a new bookmark' do
     click_button 'Add new bookmark'
     fill_in 'name', with: bookmark_name
     fill_in 'url', with: bookmark_url
-    click_button 'save'
+    click_button 'Save'
     expect(page).to have_content bookmark_name
     expect(page).to have_content bookmark_url
     expect(current_path).to eq '/bookmarks'
