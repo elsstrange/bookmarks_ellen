@@ -21,4 +21,15 @@ class Bookmark
     end
     list
   end
+
+  def self.create(name, url)
+    begin
+      con = PG.connect :dbname => ENV['bookmark_challenge_db'], :user => 'student'
+      con.exec("INSERT INTO bookmarks(name,url) VALUES('#{name}','#{url}')")
+    rescue PG::Error => e
+      puts e.message 
+    ensure
+      con.close if con
+    end
+  end
 end
