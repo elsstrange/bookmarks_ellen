@@ -1,3 +1,5 @@
+require 'pg'
+
 class Bookmark
   attr_reader :name, :url
 
@@ -7,9 +9,16 @@ class Bookmark
   end
 
   def self.all
-    [
-      self.new('Google Homepage','google.co.uk/'),
-      self.new('Github','github.com')
-    ]
+    begin
+      con = PG.connect :dbname => ENV['bookmark_challenge_db'], :user => 'student'
+      list = con.exec('SELECT * FROM bookmarks;') do |result|
+        result.map { |row| new(row['name'], row['url']) }
+      end
+    rescue PG::Error => e
+      puts e.message 
+    ensure
+      con.close if con
+    end
+    list
   end
 end

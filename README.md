@@ -1,5 +1,30 @@
 # Bookmarks
 
+## Database setup
+### Live DB
+
+Connect to psql
+```
+CREATE DATABASE bookmark_manager;
+\c bookmark_manager;
+```
+Execute table set-up query from db/migrations/01_create_bookmarks_table.sql
+
+### Test DB
+Connect to psql
+```
+CREATE DATABASE bookmark_manager_test;
+\c bookmark_manager;
+```
+Execute table set-up query from db/migrations/01_create_bookmarks_table.sql
+
+**Database to connect to is chosen from an environment variable** 
+```ruby
+ENV['bookmark_challenge_db']
+```
+**Environment variable is set in app.rb, and overridden for the test environment in spec_helper.rb**
+
+
 ## User Stories
 
 ### Requirement
