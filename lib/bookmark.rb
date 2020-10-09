@@ -9,27 +9,29 @@ class Bookmark
   end
 
   def self.all
-    begin
-      con = PG.connect :dbname => ENV['bookmark_challenge_db'], :user => 'student'
-      list = con.exec('SELECT * FROM bookmarks;') do |result|
-        result.map { |row| new(row['name'], row['url']) }
-      end
-    rescue PG::Error => e
-      puts e.message 
-    ensure
-      con.close if con
-    end
-    list
+    result = execute_sql("SELECT * FROM bookmarks;")
+    result.map { |row| new(row['name'], row['url']) }    
   end
 
   def self.create(name, url)
+    execute_sql("INSERT INTO bookmarks(name,url) VALUES('#{name}','#{url}');")
+  end
+
+  private
+  
+  def self.connect_to_db
+    PG.connect :dbname => ENV['bookmark_challenge_db'], :user => 'student'
+  end
+
+  def self.execute_sql(sql_query)
     begin
-      con = PG.connect :dbname => ENV['bookmark_challenge_db'], :user => 'student'
-      con.exec("INSERT INTO bookmarks(name,url) VALUES('#{name}','#{url}')")
+      con = connect_to_db
+      output = con.exec(sql_query)
     rescue PG::Error => e
       puts e.message 
     ensure
       con.close if con
     end
+    output
   end
 end
