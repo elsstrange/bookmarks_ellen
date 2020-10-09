@@ -1,13 +1,15 @@
 require 'sinatra/base'
 require './lib/bookmark'
 
+ENV['bookmark_challenge_db'] = 'bookmark_manager'
+
 class Bookmarks < Sinatra::Base
   get '/test' do
     'Some text'
   end
 
-  get '/' do
+  get '/bookmarks' do
     @bookmarks = Bookmark.all
-    erb :index
+    erb :bookmarks
   end
 end
